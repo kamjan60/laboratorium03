@@ -4,40 +4,80 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>SUCCESS!!!</title>
+<title>Strona użytkownika</title>
 </head>
 <body onload="myFunction()">
-	<h1>Witaj użytkowniku, ${user.login}!</h1>
+	<h1>Witaj użytkowniku, ${userlogin}!</h1>
+	<br/>
+	<div><b>Twoje id w systemie:</b></div>
+	<input type="text" name="id_user" id="id_user" readonly>
 	<div><font color="red">${somethingwentwrong}</font></div>
-	<div>Zapis na wydarzenie:</div>
-	<form action="/com.laboratorium3/eventRegister.html" method="post">
-		<div>Twoje id w systemie:</div>
-		<input type="text" name="id_user" id="id_user" readonly>
-		<div>Wydarzenie:</div>
-		<select id="wydarzenie" name="wydarzenie" onchange="myFunction()"> 
-			${listofevents}
+	<div><font color="green">${a}</font></div>
+	<br/>
+	</div><b>*****Wyświetlanie notatek*****</b><div>
+	<br/>
+	<form action="/com.laboratorium3/noteRegister.html" method="post" accept-charset="UTF-8">
+		
+		<div><b>Notatka:</b></div>
+		<select id="notatka" name="notatka" onchange="myFunction()"> 
+			${listofnotes}
 		</select>
-		<span> id wydarzenia:</span>
-		<input type="text" id="id_event" name="id_event" readonly/>
-		<div>Agenda:</div>
-		<textarea id="agenda" name="agenda" rows="10" cols="80" readonly></textarea>
-		<div>Termin wydarzenia:</div>
-		<input type="text" id="termin" name="termin" readonly cols="40">
-		<div>Typ uczestnictwa:</div>
-		<select id="typ_uczestnictwa" name="typ_uczestnictwa"> 
-			<option value="Sluchacz">Sluchacz</option>
-			<option value="Autor">Autor</option>
-			<option value="Sponsor">Sponsor</option>
-			<option value="Organizator">Organizator</option>
+		<span> id notatki:</span>
+		<input type="text" id="id_note" name="id_note" readonly/>
+		<div>Opis:</div>
+		<textarea id="opis" name="opis" rows="10" cols="80" readonly></textarea>
+		<div>Termin notatki:</div>
+		<input type="text" id="termin" name="termin" readonly>
+	</form>
+	<br/>
+	<form action ="/com.laboratorium3/addNoteViewerUser.html" method="post" accept-charset="UTF-8">
+		<input type="hidden" name="id_user5" id="id_user5" readonly>
+		<div><b>Dodawanie do wyświetlania notatek:</b></div>
+		<div>Wybierz notatkę którą chcesz pokazać:</div>
+		<select id="viewnotatka" name="viewnotatka" id="viewnotatka">
+			${listofnotes2}
 		</select>
-		<div>Wyzywienie:</div>
-		<select id="wyzywienie" name="wyzywienie"> 
-			<option value="Bez preferencji">Bez preferencji</option>
-			<option value="Wegetarianskie">Wegetarianskie</option>
-			<option value="Bez glutenu">Bez glutenu</option>
+		<div>Wybierz użytkownika któremu ją pokazać:</div>
+		<select id="viewer" name="viewer" id="viewer">
+			${listofusers}
 		</select>
-		<br/>
-		<input type="submit" value="Zapisz na wydarzenie">
+		<input type="submit" value="Udostępnij widok notatki">
+	</form>
+	<br/>
+	<div><b>*****Obsługa notatek*****</b></div>
+	<br/>
+	<div><b>Dodanie notatki:</b></div>
+	<form action="/com.laboratorium3/addNoteUser.html" method="post" accept-charset="UTF-8">
+		<input type="hidden" name="id_user2" id="id_user2" readonly>
+		<div>Podaj nazwę notatki:</div>
+		<input type="text" id="nazwa" name="nazwa">
+		<div>Podaj opis:</div>
+		<textarea id="opis" name="opis" rows="10" cols="80"></textarea>
+		<div>Podaj termin notatki (rrrr-mm-dd):</div>
+		<input type="text" id="termin" name="termin">
+		<input type="submit" value="Dodaj notatkę">
+	</form>
+	<br/>
+	<div><b>Usunięcie notatki:</b></div>
+	<form action="/com.laboratorium3/deleteNoteUser.html" method="post" accept-charset="UTF-8">
+		<input type="hidden" name="id_user3" id="id_user3" readonly>
+		<div>Podaj id notatki ktorą chcesz usunąć:</div>
+		<input type="text" id="id_note" name="id_note" value="0">
+		<input type="submit" value="Usuń notatkę">
+	</form>
+	<br/>
+	<div><b>Modyfikacja notatki:</b></div>
+	<form action="/com.laboratorium3/modifyNoteUser.html" method="post" accept-charset="UTF-8">
+		<input type="hidden" name="id_user4" id="id_user4" readonly>
+		<div>Podaj id notatki którą chcesz modyfikować:</div>
+		<input type="text" id="id_note_2" name="id_note_2" value="0">
+		<div>Podaj nazwę notatki:</div>
+		<input type="text" id="nazwa_2" name="nazwa_2">
+		<div>Podaj opis:</div>
+		<textarea id="opis_2" name="opis_2" rows="10" cols="80"></textarea>
+		<div>Podaj termin notatki (rrrr-mm-dd):</div>
+		<input type="text" id="termin_2" name="termin_2">
+		<input type="submit" value="Modyfikuj notatkę">
 	</form>
 	<br/>
 	<form action="/com.laboratorium3/index.html" method="get">
@@ -46,18 +86,26 @@
 </body>
 <script>
 function myFunction() {
-	  var i=document.getElementById('wydarzenie').value;
-	  var agendyTekst="${agenda}";
+	  var i=document.getElementById('notatka').value;
+	  var opisTekst="${opis}";
 	  var terminyTekst="${terminy}";
-	  var eventyTekst="${id_event}";
-	  var agendy=agendyTekst.split(";");
+	  var noteyTekst="${id_note}";
+	  var opis=opisTekst.split(";");
 	  var terminy=terminyTekst.split(";");
-	  var user_id="${id_user}";
-	  var eventy=eventyTekst.split(";");
-	  document.getElementById('agenda').innerHTML=agendy[i];
+	  var id_user="${id_user}";
+	  var id_user2="${id_user2}";
+	  var id_user3="${id_user3}";
+	  var id_user4="${id_user4}";
+	  var id_user5="${id_user5}";
+	  var notey=noteyTekst.split(";");
+	  document.getElementById('opis').innerHTML=opis[i];
 	  document.getElementById('termin').value=terminy[i];
-	  document.getElementById('id_user').value=user_id;
-	  document.getElementById('id_event').value=eventy[i];
+	  document.getElementById('id_note').value=notey[i];
+	  document.getElementById('id_user').value=id_user;
+	  document.getElementById('id_user2').value=id_user2;
+	  document.getElementById('id_user3').value=id_user3;
+	  document.getElementById('id_user4').value=id_user4;
+	  document.getElementById('id_user5').value=id_user5;
 }
 </script>
 </html>

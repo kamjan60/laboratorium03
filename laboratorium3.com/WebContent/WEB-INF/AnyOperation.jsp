@@ -10,8 +10,8 @@
 <body>
 	<h1>${somethingwentwrong}</h1>
 	<h1>${a}</h1>
-	<form action="/com.laboratorium3/index.html" method="get">
-		<input type="submit" value="Powrót do strony logowania."/>
+	<form action="/com.laboratorium3/submitLoginForm.html" method="get">
+		<input type="submit" value="Powrót do strony używkonika."/>
 	</form>
 </body>
 </html>
